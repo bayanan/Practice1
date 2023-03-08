@@ -17,6 +17,7 @@ namespace Practice1 {
                 return;
             }
 
+            Dictionary<char, int> allSymbolsCount = GetCountSymbols(str);
             if (str.Length % 2 == 0)
             {
                 char[] leftStr = str.Substring(0, str.Length / 2).ToCharArray();
@@ -30,7 +31,11 @@ namespace Practice1 {
                 Array.Reverse(brokenStr);
                 result = new string(brokenStr) + str;
             }
-            Console.WriteLine(result);
+            Console.WriteLine(result, "\nКоличество символов:");
+            foreach (var symbolPair in allSymbolsCount)
+            {
+                Console.WriteLine($"{symbolPair.Key}: {symbolPair.Value};");
+            }
         }
 
         private static StringBuilder GetIncorrectSymbols(string inputString)
@@ -47,6 +52,19 @@ namespace Practice1 {
             }
             
             return incorrectSymbols;
+        }
+
+        private static Dictionary<char, int> GetCountSymbols(string inputString) 
+        {
+            var symbolCount = new Dictionary<char, int>();
+            foreach (char ch in inputString)
+            {
+                if (symbolCount.ContainsKey(ch))
+                    symbolCount[ch]++;
+                else
+                    symbolCount[ch] = 1;
+            }
+            return symbolCount;
         }
     }
 }
