@@ -31,11 +31,16 @@ namespace Practice1 {
                 Array.Reverse(brokenStr);
                 result = new string(brokenStr) + str;
             }
-            Console.WriteLine(result, "\nКоличество символов:");
+
+                Console.WriteLine(result, "\nКоличество символов:");
             foreach (var symbolPair in allSymbolsCount)
             {
                 Console.WriteLine($"{symbolPair.Key}: {symbolPair.Value};");
             }
+            Regex regex = new Regex(@"^[^aeiouy]*([aeiouy]{1}\w*[aeiouy]{1})[^aeiouy]*$");
+            var match = regex.Match(result);
+            Console.WriteLine(match.Groups[1].Value);
+
         }
 
         private static StringBuilder GetIncorrectSymbols(string inputString)
