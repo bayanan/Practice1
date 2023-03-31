@@ -2,6 +2,8 @@
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Text;
+using static Practice1.TreeNode;
+using static Practice1.QuickSort;
 
 namespace Practice1 {
     public class Program { 
@@ -32,15 +34,27 @@ namespace Practice1 {
                 result = new string(brokenStr) + str;
             }
 
-                Console.WriteLine(result, "\nКоличество символов:");
+            Console.Write("Выберите способ сортировки: q - QuickSort, t - Tree Sort. ");
+            string sort = Console.ReadLine();
+            string processedString;
+            if (sort == "q")
+            {
+                var quickSort = new QuickSort();
+                processedString = quickSort.Quick(result.ToCharArray(), 0, result.Length - 1);
+            }
+            else
+                processedString = TreeSort(result);
+
+            Console.WriteLine(result, "\nКоличество символов:");
             foreach (var symbolPair in allSymbolsCount)
             {
                 Console.WriteLine($"{symbolPair.Key}: {symbolPair.Value};");
             }
-            Regex regex = new Regex(@"^[^aeiouy]*([aeiouy]{1}\w*[aeiouy]{1})[^aeiouy]*$");
-            var match = regex.Match(result);
-            Console.WriteLine(match.Groups[1].Value);
 
+            string match = VowelWords(result);
+            
+            Console.WriteLine(match);            
+            Console.WriteLine(processedString);
         }
 
         private static StringBuilder GetIncorrectSymbols(string inputString)
@@ -70,6 +84,39 @@ namespace Practice1 {
                     symbolCount[ch] = 1;
             }
             return symbolCount;
+        }
+
+        private static string VowelWords(string inputString)
+        {
+            string correctSymbols = "aeiouy";
+            int vowelCount = 0;
+
+            foreach (char ch in inputString)
+            {
+                if (correctSymbols.Contains(ch))
+                    vowelCount++;
+            }
+            Regex regex;
+            if (vowelCount > 1)
+                regex = new Regex(@"^[^aeiouy]*([aeiouy]{1}\w*[aeiouy]{1})[^aeiouy]*$");
+            else if (vowelCount == 0)
+                return "Гласные буквы не найдены.";
+            else
+                regex = new Regex(@"^[^aeiouy]*([aeiouy]{1})[^aeiouy]*$");
+
+            return regex.Match(inputString).Groups[1].Value;
+        }
+
+        private static string TreeSort(string inputString)
+        {
+            var treeNode = new TreeNode(inputString[0]);
+
+            for (int i = 1; i < inputString.Length; i++)
+            {
+                treeNode.Insert(inputString[i]);
+            }
+            
+            return new string(treeNode.Transform());
         }
     }
 }
