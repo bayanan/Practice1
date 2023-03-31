@@ -37,9 +37,9 @@ namespace Practice1 {
             {
                 Console.WriteLine($"{symbolPair.Key}: {symbolPair.Value};");
             }
-            Regex regex = new Regex(@"^[^aeiouy]*([aeiouy]{1}\w*[aeiouy]{1})[^aeiouy]*$");
-            var match = regex.Match(result);
-            Console.WriteLine(match.Groups[1].Value);
+            
+            string match = VowelWords(result);
+            Console.WriteLine(match);
 
         }
 
@@ -71,5 +71,27 @@ namespace Practice1 {
             }
             return symbolCount;
         }
+
+        private static string VowelWords(string inputString)
+        {
+            string correctSymbols = "aeiouy";
+            int vowelCount = 0;
+
+            foreach (char ch in inputString)
+            {
+                if (correctSymbols.Contains(ch))
+                    vowelCount++;
+            }
+            Regex regex;
+            if (vowelCount > 1)
+                regex = new Regex(@"^[^aeiouy]*([aeiouy]{1}\w*[aeiouy]{1})[^aeiouy]*$");
+            else if (vowelCount == 0)
+                return "Гласные буквы не найдены.";
+            else
+                regex = new Regex(@"^[^aeiouy]*([aeiouy]{1})[^aeiouy]*$");
+
+            return regex.Match(inputString).Groups[1].Value;
+        }
+
     }
 }
